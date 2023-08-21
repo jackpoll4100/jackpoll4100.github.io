@@ -1,0 +1,141 @@
+<!-- template for other files -->
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocktimer/1.1.0/tock.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ </head>
+
+<body class="red">
+  <div class="row red"></div>
+  <div class="row red"></div>
+  <div class="row red"></div>
+  <div class="row red" id="card-grid"></div>
+<div class="row">
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-medium blue-grey darken-2" 
+       href="https://jackpoll4100.github.io">
+      <i class="large material-icons">arrow_back</i>
+    </a>
+  </div>
+  <div class="col s1"></div>
+  <div class="card col s10 black green-text center">
+   <span class="card-title digital" id='word-card'>Shall we begin?</span>
+   <button id="start" class="btn-floating btn-small green pulse" style="margin-left: 50px;"><i class="material-icons">gps_fixed</i></button>
+   <button id="stop" class="btn-floating btn-small red pulse" style="margin-left: 10px;"><i class="material-icons">highlight_off</i></button>
+  </div>
+  <div hidden class="card col s8 blue-grey darken-1 white-text center">
+   <span class="card-title digital">Timer:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+   <input class="white-text center" id="clock" value="01:30">
+  </div>
+</div>
+</body>
+<!-- include this element in the body: --->
+<!-- <div class="fixed-action-btn">
+     <a class="btn-floating btn-medium blue-grey darken-2" 
+         href="https://jackpoll4100.github.io">
+      <i class="large material-icons">arrow_back</i>
+    </a>
+  </div> -->
+  
+<script>
+  var timerFlag = false;
+  var timerDigit = 0;
+  var underTenFlag = false;
+  var timeVals = ['00:30', '00:30', '00:40', '00:45', '00:50', '00:55', '01:00', '01:05', '01:10', '01:15', '01:20', '01:25', '01:30'];
+  function play() {
+  	var audio = new Audio(
+  		'https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3');
+  	audio = !underTenFlag ? new Audio('http://soundbible.com/grab.php?id=2044&type=mp3') : audio;
+  	audio.play();
+  }
+  var wordList = 'AFRICA,AGENT,AIR,ALIEN,ALPS,AMAZON,AMBULANCE,AMERICA,ANGEL,ANTARCTICA,APPLE,ARM,ATLANTIS,AUSTRALIA,AZTEC,BACK,BALL,BAND,BANK,BAR,BARK,BAT,BATTERY,BEACH,BEAR,BEAT,BED,BEIJING,BELL,BELT,BERLIN,BERMUDA,BERRY,BILL,BLOCK,BOARD,BOLT,BOMB,BOND,BOOM,BOOT,BOTTLE,BOW,BOX,BRIDGE,BRUSH,BUCK,BUFFALO,BUG,BUGLE,BUTTON,CALF,CANADA,CAP,CAPITAL,CAR,CARD,CARROT,CASINO,CAST,CAT,CELL,CENTAUR,CENTER,CHAIR,CHANGE,CHARGE,CHECK,CHEST,CHICK,CHINA,CHOCOLATE,CHURCH,CIRCLE,CLIFF,CLOAK,CLUB,CODE,COLD,COMIC,COMPOUND,CONCERT,CONDUCTOR,CONTRACT,COOK,COPPER,COTTON,COURT,COVER,CRANE,CRASH,CRICKET,CROSS,CROWN,CYCLE,CZECH,DANCE,DATE,DAY,DEATH,DECK,DEGREE,DIAMOND,DICE,DINOSAUR,DISEASE,DOCTOR,DOG,DRAFT,DRAGON,DRESS,DRILL,DROP,DUCK,DWARF,EAGLE,EGYPT,EMBASSY,ENGINE,ENGLAND,EUROPE,EYE,FACE,FAIR,FALL,FAN,FENCE,FIELD,FIGHTER,FIGURE,FILE,FILM,FIRE,FISH,FLUTE,FLY,FOOT,FORCE,FOREST,FORK,FRANCE,GAME,GAS,GENIUS,GERMANY,GHOST,GIANT,GLASS,GLOVE,GOLD,GRACE,GRASS,GREECE,GREEN,GROUND,HAM,HAND,HAWK,HEAD,HEART,HELICOPTER,HIMALAYAS,HOLE,HOLLYWOOD,HONEY,HOOD,HOOK,HORN,HORSE,HORSESHOE,HOSPITAL,HOTEL,ICE,ICE CREAM,INDIA,IRON,IVORY,JACK,JAM,JET,JUPITER,KANGAROO,KETCHUP,KEY,KID,KING,KIWI,KNIFE,KNIGHT,LAB,LAP,LASER,LAWYER,LEAD,LEMON,LEPRECHAUN,LIFE,LIGHT,LIMOUSINE,LINE,LINK,LION,LITTER,LOCH NESS,LOCK,LOG,LONDON,LUCK,MAIL,MAMMOTH,MAPLE,MARBLE,MARCH,MASS,MATCH,MERCURY,MEXICO,MICROSCOPE,MILLIONAIRE,MINE,MINT,MISSILE,MODEL,MOLE,MOON,MOSCOW,MOUNT,MOUSE,MOUTH,MUG,NAIL,NEEDLE,NET,NEW YORK,NIGHT,NINJA,NOTE,NOVEL,NURSE,NUT,OCTOPUS,OIL,OLIVE,OLYMPUS,OPERA,ORANGE,ORGAN,PALM,PAN,PANTS,PAPER,PARACHUTE,PARK,PART,PASS,PASTE,PENGUIN,PHOENIX,PIANO,PIE,PILOT,PIN,PIPE,PIRATE,PISTOL,PIT,PITCH,PLANE,PLASTIC,PLATE,PLATYPUS,PLAY,PLOT,POINT,POISON,POLE,POLICE,POOL,PORT,POST,POUND,PRESS,PRINCESS,PUMPKIN,PUPIL,PYRAMID,QUEEN,RABBIT,RACKET,RAY,REVOLUTION,RING,ROBIN,ROBOT,ROCK,ROME,ROOT,ROSE,ROULETTE,ROUND,ROW,RULER,SATELLITE,SATURN,SCALE,SCHOOL,SCIENTIST,SCORPION,SCREEN,SCUBA DIVER,SEAL,SERVER,SHADOW,SHAKESPEARE,SHARK,SHIP,SHOE,SHOP,SHOT,SINK,SKYSCRAPER,SLIP,SLUG,SMUGGLER,SNOW,SNOWMAN,SOCK,SOLDIER,SOUL,SOUND,SPACE,SPELL,SPIDER,SPIKE,SPINE,SPOT,SPRING,SPY,SQUARE,STADIUM,STAFF,STAR,STATE,STICK,STOCK,STRAW,STREAM,STRIKE,STRING,SUB,SUIT,SUPERHERO,SWING,SWITCH,TABLE,TABLET,TAG,TAIL,TAP,TEACHER,TELESCOPE,TEMPLE,THEATER,THIEF,THUMB,TICK,TIE,TIME,TOKYO,TOOTH,TORCH,TOWER,TRACK,TRAIN,TRIANGLE,TRIP,TRUNK,TUBE,TURKEY,UNDERTAKER,UNICORN,VACUUM,VAN,VET,WAKE,WALL,WAR,WASHER,WASHINGTON,WATCH,WATER,WAVE,WEB,WELL,WHALE,WHIP,WIND,WITCH,WORM,YARD,whatever,buddy,sip,chicken coop,blur,chime,bleach,clay,blossom,cog,wish,through,feudalism,whiplash,cot,blueprint,beanstalk,think,cardboard,darts,inn,Zen,crow,nest,BFF,sheriff,tiptop,dot,bob,garden hose,blimp,dress shirt,reimbursement,capitalism,step-daughter,applause,jig,jade,blunt,application,rag,squint,intern,brainstorm,sling,half,pinch,leak,skating rink,jog,jammed,shrink ray,dent,scoundrel,escalator,phone charger,kitchen,knife,set,sequins,ladder,rung,flu,scuff,mast,sash,modern,ginger,clockwork,mess,mascot,runt,chain,scar tissue,suntan,pomp,scramble,sentence,first mate,cuff,cuticle,fortnight,riddle,spool,full,moon,forever,rut,hem,new,train,diver,fringe,humidifier,handwriting,dawn,dimple,gray hair,hedge,plank,race,publisher,fizz,gem,ditch,wool,plaid,fancy,feast,Murphy\'s Law,billboard,flush,inconceivable,tide,midsummer,population,my,elm,organ,flannel,hatch,booth,doorbell,witch,bats,costume,autumn,skeleton,sweets,afraid,scarecrow,candy,Frankenstein,candy corn,hay ride,boo,lollipop,dark,ghost,trick or treat,scary,jack-o-lantern,haunted house,ghost,story,spider,werewolf,scary,movies,graveyard,spells,pumpkin,vampire,marshmallow,zombie,secret,lab,ma scientist,monster,chocolate,spider web,black,Dracula,grave,creepy,Monster Mash,corn,maze,candle,crypt,apple,cider,frightened,fortune teller,pumpkin,seeds,horror,ghoul,coffin,nighttime,Ghostbusters,goblin,spooky,lantern,gypsy,ACE,ALASKA,ANCHOR,ANT,ANTHEM,APRON,ARMOR,ARMY,ASTRONAUT,ATTIC,AVALANCHE,AXE,BABY,BACON,BALLOON,BANANA,BARBECUE,BASS,BATH,BATTLE,BATTLESHIP,BAY,BEAM,BEAN,BEARD,BEE,BEER,BENCH,BICYCLE,BIGBANG,BIGBEN,BIKINI,BISCUIT,BLACKHOLE,BLACKSMITH,BLADE,BLIND,BLIZZARD,BLUES,BOIL,BONSAI,BOOK,BOSS,BOWL,BOWLER,BOXER,BRAIN,BRASS,BRAZIL,BREAD,BREAK,BRICK,BRIDE,BROTHER,BUBBLE,BUCKET,BULB,BUNK,BUTTER,BUTTERFLY,CABLE,CAESAR,CAKE,CAMP,CANE,CAPTAIN,CASTLE,CAVE,CHAIN,CHALK,CHEESE,CHERRY,CHIP,CHRISTMAS,CLEOPATRA,CLOCK,CLOUD,COACH,COAST,COFFEE,COLLAR,COLUMBUS,COMB,COMET,COMPUTER,CONE,COW,COWBOY,CRAB,CRAFT,CROW,CRUSADER,CRYSTAL,CUCKOO,CURRY,DASH,DELTA,DENTIST,DESK,DIRECTOR,DISK,DOLL,DOLLAR,DRAWING,DREAM,DRESSING,DRIVER,DRONE,DRUM,DRYER,DUST,EAR,EARTH,EARTHQUAKE,EASTER,EDEN,EGG,EINSTEIN,FARM,FEVER,FIDDLE,FLAG,FLAT,FLOOD,FLOOR,FOAM,FOG,FROG,FROST,FUEL,GANGSTER,GEAR,GENIE,GLACIER,GLASSES,GOAT,GOLDILOCKS,GOLF,GOVERNOR,GREENHOUSE,GROOM,GUITAR,GUM,GYMNAST,HAIR,HALLOWEEN,HAMBURGER,HAMMER,HAWAII,HELMET,HERCULES,HIDE,HIT,HOMER,HOSE,HOUSE,ICEAGE,ICELAND,IGLOO,INK,JAIL,JELLYFISH,JEWELER,JOANOFARC,JOCKEY,JOKER,JUDGE,JUMPER,KICK,KILT,KINGARTHUR,KISS,KITCHEN,KNOT,KUNGFU,LACE,LADDER,LAUNDRY,LEATHER,LEMONADE,LETTER,LIGHTNING,LIP,LOCUST,LOVE,LUMBERJACK,LUNCH,MAGAZINE,MAGICIAN,MAKEUP,MANICURE,MAP,MARACAS,MARATHON,MEDIC,MEMORY,MESS,METER,MICROWAVE,MILE,MILK,MILL,MINOTAUR,MINUTE,MIRROR,MISS,MOHAWK,MONALISA,MONKEY,MOSES,MOSQUITO,MOTHER,MOUNTIE,MUD,MUMMY,MUSKETEER,MUSTARD,NAPOLEON,NERVE,NEWTON,NOAH,NOSE,NOTREDAME,NYLON,OASIS,ONION,PACIFIC,PAD,PADDLE,PAGE,PAINT,PARADE,PARROT,PATIENT,PEA,PEACH,PEANUT,PEARL,PEN,PENNY,PENTAGON,PEPPER,PEW,PIG,PILLOW,PINE,PIZZA,POCKET,POLISH,POLO,POP,POPCORN,POTATO,POTTER,POWDER,PUPPET,PURSE,QUACK,QUARTER,RADIO,RAIL,RAINBOW,RAM,RANCH,RAT,RAZOR,RECORD,REINDEER,RICE,RIFLE,RIP,RIVER,ROAD,RODEO,ROLL,ROPE,RUBBER,RUSSIA,RUST,SACK,SADDLE,SAHARA,SAIL,SALAD,SALOON,SALSA,SALT,SAND,SANTA,SAW,SCARECROW,SCRATCH,SCROLL,SECOND,SHAMPOO,SHED,SHEET,SHELL,SHERLOCK,SHERWOOD,SHOOT,SHORTS,SHOULDER,SHOWER,SIGN,SILK,SISTER,SKATES,SKI,SKULL,SLED,SLEEP,SLING,SLIPPER,SLOTH,SMOKE,SMOOTHIE,SNAKE,SNAP,SOAP,SOUP,SPHINX,SPIRIT,SPOON,SPRAY,SPURS,SQUASH,SQUIRREL,ST.PATRICK,STABLE,STAMP,STEAM,STEEL,STEP,STETHOSCOPE,STICKER,STORM,STORY,STREET,SUGAR,SUMO,SUN,SWAMP,SWEAT,SWORD,TANK,TASTE,TATTOO,TEA,TEAM,TEAR,TEXAS,THUNDER,TIGER,TIN,TIP,TIPI,TOAST,TORNADO,TRICK,TROLL,TUNNEL,TURTLE,TUTU,TUXEDO,UNIVERSITY,VALENTINE,VAMPIRE,VENUS,VIKING,VIOLET,VIRUS,VOLCANO,VOLUME,WAGON,WAITRESS,WALRUS,WEDDING,WEREWOLF,WHEEL,WHEELCHAIR,WHISTLE,WINDOW,WING,WISH,WIZARD,WONDERLAND,WOOL,YELLOWSTONE,ZOMBIE,FLY SWATTER,Kill,Slap,Bug,Buzz,Tool, CANADA,North,Cold,Snow,Goose,Mountie, ADDICTION,Drug,Alcohol,Rehab,Habit,Withdrawal, INCISION,Cut,Operate,Surgery,Scalpel,Stitch, POLO,Horse,Water,Shirt,Club,Sport, SCREAM,Yell,Shout,Scare,Fear,Surprise, CURFEW,Late,Teenager,Home,Ground,Time, SPREADSHEET,Excel,Numbers,Math,Equations,Table, SPIRITUAL,Belief,Religion,Faith,God,Holy, BLISTER,Pop,Skin,Heel,Handle,Foot, MOTHERBOARD,Computer,Processor,Boot,Circuit,Chip, NORTH CAROLINA,Atlantic,Tar Heel,South,Virginia,Tennessee, BAR STOOL,Drink,Sit,Chair,Fight,Kitchen, THERAPIST,Analyze,Doctor,Couch,Shrink,Psychiatrist, WHIRLPOOL,Water,Spin,River,Swirl,Appliance, CALCULUS,Math,Function,Derivative,Integral,Limit, ILLITERATERead,Write,Word,School,Educate, BEATBOX,Rhythm,Drum,Mouth,Sound,Music, SQUIRREL,Tree,Rocky,Bushy,Road,Fly, ANTEATER,Animal,Insects,Tongue,Termites,Hill, BIGFOOT,Sasquatch,Yeti,Hairy,Monster,Legend, CONCH,Shell,Whelk,Ocean,Beach,Snail, PAPER BOY,News,Deliver,Bicycle,Nintendo,Throw, PILLAGE,Burn,City,Pirate,Soldier,Plunder, SIT-UP,Crunch,Abdominal,Fitness,Workout,Exercise, PHOTOGRAPH,Picture,Camera,Cheese,Art,Snap, WITCHCRAFT,Burn,Magic,Potter,Practice,Wizard, TUMOR,Cancer,Malignant,Benign,Doctor,Lump, GARBAGE,Day,Trash,Collect,Truck,Can, ZOO,Animal,Panda,Monkey,Visit,Cage, LUGE,Olympics,Slide,Back,Board,Downhill, CUCUMBER,Vegetable,Green,Crunch,Grow,Pickle, ENTREPRENEUR,Business,Company,Hire,Start,Sell, BIRTHDAY CAKE,Candle,Chocolate,Vanilla,Frosting,Party, COLOGNE,Smell,Date,Man,French,Dab, DEMOCRACY,Government,Elect,Vote,America,Republic, FUNGUS,Mushroom,Spore,Mildew,Mold,Green, HAIRBRUSH,Comb,Salon,Straight,Tangle,Morning, VISOR,Golf,Hat,Head,Sun,Eyes, WALL STREET,Stock Market,Broker,Bond,Greed,New York, ODYSSEUS,Troy,Home,Ulysses,Homer,Epic, MOTEL,Inn,Hotel,Cheap,Sleep,Stay, RAINBOW,Color,Gold,Light,Reading,Waterfall, ELVIS PRESLEY,Graceland,Hound Dog,Sing,Rock N\' Roll,King, CANVAS,Blank,Paint,Draw,Door,Poll, WRITE,Paper,Pencil,Pen,Letter,Hand, WILDFIRE,Hot,Forest,Brush,Fight,Spread, EMERALD,Green,Oz,Stone,Gem,Diamond, BOXER,Sport,Dog,Punch,Ring,Gloves, BEEF JERKY,Slim Jim,Dry,Meat,Chew,Salt, KIDDIE POOL,Swim,Small,Kid,Shallow,Baby, TOOTHPASTE,Brush,Teeth,Mouth,Bed,Clean, PUREE,Blend,Liquid,Smooth,Sauce,Tomato, KING CRAB,Seafood,Claw,Sideways,Pincer,Leg, WELCOME,Greet,Mat,Hello,Home,Party, CRAWL,Baby,Space,Bug,Knees,Floor, CROP CIRCLE,Corn,Ufo,Pattern,Alien,Hoax, PASSWORD,Hack,Steal,Lock,Secret,Login, WEBCAM,Skype,Chat,Video,Talk,Computer, WHEELCHAIR,Disable,Handicap,Roll,Electric,Ramp, YANKE,Northern,New York,American,Baseball,British, ZEUS,Jupiter,Greek,King,God,Olympus, BEETHOVEN,Composer,Deaf,Piano,Symphony,Roll Over, BIKINI,Yellow,Beach,Wear,Wax, BUFFET,Eat,Meal,All,Salad,Chinese, COAST,Ocean,Beach,Sand,Sail,Wave, PLATEAU,Flat,Land,Mountain,West,Desert, RANCID,Sour,Milk,Bad,Rotten,Trash, SIGNAL,Smoke,Morse Code,Sign,Light,Turn, SLOW MOTION,Move,Movie,Frame,Action,Film, SLEET,Rain,Sky,Ice,Cloud,Freeze, DANCE,Disco,Ballroom,Waltz,Floor,Revolution, ENGINEER,Train,Civil,Bridge,Electric,Computer, CEO,Business,Company,Lead,Head,Run, CHEAT,Rules,System,Affair,Game,Break, JULIUS CAESAR,Rome,Salad,Calendar,Emperor, APOCALYPSE,End,World,Plague,Rapture,Nuclear, SURGEON,Doctor,Stitch,Hospital,Operate,Brain, SAMURAI,Japan,Warrior,Ninja,Sword,Katana, WATERMELON,Seed,Red,Green,Summer,Juice, BLIND,Vision,See,Glasses,Cane,Dog, REAL ESTATE,House,Land,Realty,Mortgage,Bubble, EXORCISM,Demon,Priest,Holy,Christ,Cleanse, PEANUT,Butter,Jelly,Shell,Salt,Charlie Brown, PARDON,Forgive,Convict,Amnesty,French,President, EASTER EGG,Color,Paint,Dye,Vinegar,Hunt, EMBARRASSED,Shy,Blush,Red,Foolish,Feel, POISON IVY,Itch,Rash,Plant,Skin,Touch, BEG,Ask,Knee,Plead,Mercy,Dog, BUDDHA,India,Meditate,Religion,Statue, BRUISE,Black,Blue,Blood,Skin,Hurt, THORN,Rose,Bush,Side,Stem, PHARMACIST,Pill,Prescription,Pharmacy,Counter,Medicine, VOCAL CHORDS,Talk,Sing,Throat,Lose,Vibrate, CAMEL,Ride,Spit,Desert,Water, GREEN TEA,Caffeine,Hot,Bag,Drink,Coffee, SUPERCOMPUTER,Keyboard,Internet,Research,Powerful,Science, TRAGEDY,Greek,Romeo And Juliet,Sad,Horrible,Ending, DRAW,Art,Straws,Tie,Pencil,Pen, SERIAL KILLER,Murder,Hannibal,Crazy,Kill,Catch, AL CAPONE,Mob,Mafia,Prohibition,Alcohol,Bootleg, EAST,Sunrise,Asia,Russia,West,New York, First Lady,President,Secretary Of State,Election, WRESTLING,Greek,Arm,Fight,Boxing,Grab, FRENCH KISS,Lips,Make Out,Tongue,Party,Mouth, Church,Music,Hymn,Play,Piano, WAITER,Tip,Table,Serve,Food,Male, STEWARDESS,Plane,Serve,Order,Air,Food, POKER,Card,Face,Gamble,Bluff,Hold, FERRIS WHEEL,Fair,Ride,Circus,Around,High, SMOOTH,Rough,Slick,Suave,Texture,Creamy, CELLO,String,Bass,Bow,Orchestra, WHISKEY,Bourbon,Shot,Bar,Jack Daniels,Scotch, GOLDFISH,Guppy,Bowl,Crackers,Cheese,Aquarium, BARTENDER,Serve,Drink,Alcohol,Beer,Order, JAYWALK,Cross,Road,Street,Illegal,Cars, EARRING,Pierce,Jewelry,Lobe,Hoop,Girl, WRIGHT BROTHERS,Air Plane,Flight,Inventors,Bicycle, DEMON,Evil,Possess,Halloween,Hell,Horn, MOOSE,North,Chocolate,Deer,Hunt,Antler, DIAPER,Wear,Stink,Wet,Change,Baby, UNICORN,Fantasy,Horn,Horse,Rainbow,One, HANGMAN,Execute,Rope,Hood,Death,Punish, DRUMSTICK,Wood,Chicken,Hit,Band,Snare';
+  var words = wordList.split(',');
+  function getRandomSubarray(arr, size) {
+      var shuffled = arr.slice(0), i = arr.length, temp, index;
+      while (i--) {
+          index = Math.floor((i + 1) * Math.random());
+          temp = shuffled[index];
+          shuffled[index] = shuffled[i];
+          shuffled[i] = temp;
+      }
+      return shuffled.slice(0, size);
+  }
+  const timer = new Tock({
+        countdown: true,
+        interval: 10,
+        callback: () => {
+          var current_time = timer.msToTime(timer.lap());
+          document.getElementById('clock').value = current_time;
+          if (timerDigit !== current_time[4]){
+  					play();
+            if(current_time[1] === '0'){ play(); }
+            if(current_time[1] === '0' && parseInt(current_time[3]) < 3){ play(); }
+            if(current_time[1] === '0' && current_time[3] === '0'){ underTenFlag = true; play(); }
+          }
+          timerDigit = current_time[4];
+        },
+        complete: () => {
+        	timerFlag = false;
+          var audio = new Audio('http://soundbible.com/grab.php?id=1919&type=mp3');
+          audio.play();
+          typeWriter('Bomb Detonated');
+        }
+      });
+  function typeWriter(txt) {
+    var i = 0;
+    var speed = 50;
+    function typeWriterRec() {
+      if (i === 0) {
+        document.getElementById("word-card").innerHTML = '';
+      }
+      if (i < txt.length) {
+        document.getElementById("word-card").innerHTML += txt.charAt(i);
+        i++;
+        setTimeout(typeWriterRec, speed);
+      }
+    }
+    typeWriterRec();
+  }
+  document.getElementById('start').addEventListener('click', () => {
+      if (!timerFlag){
+      	underTenFlag = false;
+        document.getElementById('clock').value = getRandomSubarray(timeVals, 1);
+        timer.start(document.getElementById('clock').value);
+        timerFlag = true;
+      }
+      typeWriter(getRandomSubarray(words, 1)[0]);
+    });
+  document.getElementById('stop').addEventListener('click', () => {
+  		underTenFlag = false;
+      timer.stop();
+      typeWriter('Shall we begin?');
+      document.getElementById('clock').value = '01:30';
+      timerFlag = false
+    });
+</script>
+<!-- Styling -->
+<style>
+  .fixed-action-btn {
+    position: fixed;
+    right: auto;
+    bottom: auto;
+    top: 0px;
+    left: 5px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    z-index: 997;
+  }
+  .digital{
+    font-family: 'Digital-7 Mono', sans-serif !important;
+  }
+  
+  body {
+    zoom: 200%;
+  }
+</style>
+</html>
