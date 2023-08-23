@@ -32,169 +32,169 @@
 <div class="green" id="snackbar2" style="z-index: 100000000000;">You have some incorrect answers...</div>
 <!-- Core JS functions -->
 <script>
-  var crossContainer = document.getElementById("cross-container");
-  var crossPuzzle = '';
-  var letterMatrix = [];
-  var tempArray = [];
-  var wordHolder = '';
-  var clueHolder = [];
-  var testMatrix = [];
-  
-  var year = Math.floor(Math.random() * 42) + 1976;
-  var month = Math.floor(Math.random() * 12) + 1;
-  if (month < 10){
-    month = '0' + String(month);
-  }
-  else {
-    month = String(month);
-  }
-  console.log(month);
-  var day = Math.floor(Math.random() * 29) + 1;
-  if (day < 10){
-    day = '0' + String(day);
-  }
-  else {
-    day = String(day);
-  }
-  let url = `https://raw.githubusercontent.com/doshea/nyt_crosswords/master/${year}/${month}/${day}.json`;
-  fetch(url)
-    .then(function(response) {
-      // Render the Response Status
-      return response.json();
-    })
-    .then(function(json) {
-      // Render the parsed body
-      console.log(json);
-      for (var i = 0; i < 15; i++){
-        tempArray = [];
-        for (var j = 0; j < 15; j++){
-        	if(json.grid[i+j*15] == '.'){
-          	tempArray.push(false);
-          }
-          else{
-          	tempArray.push(true);
-          }
-        }
-        letterMatrix.push(tempArray);
-      }
-      var useNum = '';
-      for (var x = 0; x < 15; x++){
-        crossPuzzle += `<div class="row" style='padding-bottom: 0px!important; margin: 0px; height: 24px;'>`;
-        for (var y = 0; y < 15; y++){
-          var visibility = 'hidden';
-          if (letterMatrix[y][x]){
-            visibility = 'visible';
-          }
-          useNum = '';
-          if (json.gridnums[y+x*15] !== 0){
-          	useNum = json.gridnums[y+x*15];
-          }
-          crossPuzzle += `<span class="letter" data-number="${useNum}"><input class='char white inputs box' style='width: 20px; height: 20px; visibility: ${visibility}' type='text' maxlength='1' id='${x}-${y}'/>&nbsp;</span>`;
-        }
-        crossPuzzle += '</div>'; 
-      }
-      crossPuzzle += `<div class="card blue-grey darken-3 white-text"><div class="card-content">&nbsp;&nbsp;&nbsp;<a class="btn-floating right waves-effect waves-light red" id="acrossfab"><i class="material-icons">check</i></a><span class="card-title activator white-text">Across&nbsp;&nbsp;&nbsp;<i class="material-icons">sync</i></span>`;
-      for(var z = 0; z < json.clues.across.length; z++){
-      	crossPuzzle += `${json.clues.across[z]}<br>`;
-      } 
-      crossPuzzle += '</div>'
-      crossPuzzle += `<div class="white-text card-reveal blue-grey darken-3">
-        &nbsp;&nbsp;&nbsp;<a class="btn-floating right waves-effect waves-light red" id="downfab"><i class="material-icons">check</i></a><span class="card-title white-text">Down&nbsp;&nbsp;&nbsp;<i class="material-icons">sync</i></span>`;
-      for(var z = 0; z < json.clues.down.length; z++){
-      	crossPuzzle += `${json.clues.down[z]}<br>`;
-      } 
-      crossPuzzle += `</div>`;
-      crossPuzzle += '</div>';
-      crossContainer.innerHTML = crossPuzzle;
-      console.log('endExec: ', wordHolder);
-      testMatrix = json.grid;
-      console.log(testMatrix);
-      console.log('Date: ', json.date);
-      document.getElementById("downfab").addEventListener("click", function(){
-      	var answer = answerCorrect();
-        var completionState = answer[0];
-        if(completionState){
-          // Get the snackbar DIV
-          var x = document.getElementById("snackbar");
-          // Add the "show" class to DIV
-          x.className = "show";
-          // After 3 seconds, remove the show class from DIV
-          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-        }
-        else{
-          // Get the snackbar DIV
-          var x = document.getElementById("snackbar2");
-          x.innerHTML = `You have some incorrect answers...(${answer[1]} spaces are correct)`;
-          // Add the "show" class to DIV
-          x.className = "show";
-          // After 3 seconds, remove the show class from DIV
-          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-        }
-      });
-     document.getElementById("acrossfab").addEventListener("click", function(){
-     		var answer = answerCorrect();
-        var completionState = answer[0];
-        if(completionState){
-          // Get the snackbar DIV
-          var x = document.getElementById("snackbar");
-          // Add the "show" class to DIV
-          x.className = "show";
-          // After 3 seconds, remove the show class from DIV
-          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-        }
-        else{
-          // Get the snackbar DIV
-          var x = document.getElementById("snackbar2");
-          x.innerHTML = `You have some incorrect answers...(${answer[1]} spaces are correct)`;
-          // Add the "show" class to DIV
-          x.className = "show";
-          // After 3 seconds, remove the show class from DIV
-          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-        }
-      });
-      $(".inputs").keyup(function (e) {
-      		console.log('keyup');
-     			var chr = e.keyCode;
-          if (e.which !== 8){
-          	//console.log(this.parentNode);
-          	$(this.parentNode).next().children()[0].focus();
-          }
-          else{
-          	$(this.parentNode).prev().children().focus();
-          }
-    });
-    });
-    function answerCorrect(){
-    	var returnValue = true;
-      var totalScore = 0;
-    	for (var i = 0; i < 15; i++){
-        for (var j = 0; j < 15; j++){
-        	if(testMatrix[i+j*15] === '.' || testMatrix[i+j*15] === document.getElementById(`${j}-${i}`).value.toUpperCase()){
-          	totalScore += testMatrix[i+j*15] === '.' ? 0 : 1;
-          }
-          else{
-          	returnValue = false;
-          }
-        }
-      }
-      return [returnValue, totalScore];
-    }
-    function debugAnswerCorrect(){
-    	//console.log('mat 1:', testMatrix);
-    	for (var i = 0; i < 15; i++){
-        for (var j = 0; j < 15; j++){
-        	//console.log(i+j*15);
-          //console.log(testMatrix[i+j*15]);
-          //console.log(`${j}-${i}`);
-        	document.getElementById(`${j}-${i}`).value = testMatrix[i+j*15];
-        }
-      }
-      //console.log('mat 2:', testMatrix);
-      return true;
-    }
+ var crossContainer = document.getElementById("cross-container");
+ var crossPuzzle = '';
+ var letterMatrix = [];
+ var tempArray = [];
+ var wordHolder = '';
+ var clueHolder = [];
+ var testMatrix = [];
+ 
+ var year = Math.floor(Math.random() * 42) + 1976;
+ var month = Math.floor(Math.random() * 12) + 1;
+ if (month < 10){
+   month = '0' + String(month);
+ }
+ else {
+   month = String(month);
+ }
+ console.log(month);
+ var day = Math.floor(Math.random() * 29) + 1;
+ if (day < 10){
+   day = '0' + String(day);
+ }
+ else {
+   day = String(day);
+ }
+ let url = `https://raw.githubusercontent.com/doshea/nyt_crosswords/master/${year}/${month}/${day}.json`;
+ fetch(url)
+   .then(function(response) {
+     // Render the Response Status
+     return response.json();
+   })
+   .then(function(json) {
+     // Render the parsed body
+     console.log(json);
+     for (var i = 0; i < 15; i++){
+       tempArray = [];
+       for (var j = 0; j < 15; j++){
+       	if(json.grid[i+j*15] == '.'){
+         	tempArray.push(false);
+         }
+         else{
+         	tempArray.push(true);
+         }
+       }
+       letterMatrix.push(tempArray);
+     }
+     var useNum = '';
+     for (var x = 0; x < 15; x++){
+       crossPuzzle += `<div class="row" style='padding-bottom: 0px!important; margin: 0px; height: 24px;'>`;
+       for (var y = 0; y < 15; y++){
+         var visibility = 'hidden';
+         if (letterMatrix[y][x]){
+           visibility = 'visible';
+         }
+         useNum = '';
+         if (json.gridnums[y+x*15] !== 0){
+         	useNum = json.gridnums[y+x*15];
+         }
+         crossPuzzle += `<span class="letter" data-number="${useNum}"><input class='char white inputs box' style='width: 20px; height: 20px; visibility: ${visibility}' type='text' maxlength='1' id='${x}-${y}'/>&nbsp;</span>`;
+       }
+       crossPuzzle += '</div>'; 
+     }
+     crossPuzzle += `<div class="card blue-grey darken-3 white-text"><div class="card-content">&nbsp;&nbsp;&nbsp;<a class="right waves-effect waves-light btn-small indigo lighten-1" id="acrossfab">Check <i class="material-icons right">check</i></a><div class="recessed">Date: ${month}/${day}/${year}</div><span class="card-title activator white-text recessed">Across<i class="material-icons right">sync</i></span>`;
+     for(var z = 0; z < json.clues.across.length; z++){
+     	crossPuzzle += `${json.clues.across[z]}<br>`;
+     } 
+     crossPuzzle += '</div>'
+     crossPuzzle += `<div class="white-text card-reveal blue-grey darken-3">
+       &nbsp;&nbsp;&nbsp;<a class="btn-small right waves-effect waves-light indigo lighten-1" id="downfab">Check <i class="material-icons right">check</i></a><div class="recessed">Date: ${month}/${day}/${year}</div><span style="line-height: 32px !important;" class="card-title activator white-text recessed">Down<i style="line-height: 32px !important;" class="material-icons right">sync</i></span>`;
+     for(var z = 0; z < json.clues.down.length; z++){
+     	crossPuzzle += `${json.clues.down[z]}<br>`;
+     } 
+     crossPuzzle += `</div>`;
+     crossPuzzle += '</div>';
+     crossContainer.innerHTML = crossPuzzle;
+     console.log('endExec: ', wordHolder);
+     testMatrix = json.grid;
+     console.log(testMatrix);
+     console.log('Date: ', json.date);
+     document.getElementById("downfab").addEventListener("click", function(){
+     	var answer = answerCorrect();
+       var completionState = answer[0];
+       if(completionState){
+         // Get the snackbar DIV
+         var x = document.getElementById("snackbar");
+         // Add the "show" class to DIV
+         x.className = "show";
+         // After 3 seconds, remove the show class from DIV
+         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+       }
+       else{
+         // Get the snackbar DIV
+         var x = document.getElementById("snackbar2");
+         x.innerHTML = `You have some incorrect answers...(${answer[1]} spaces are correct)`;
+         // Add the "show" class to DIV
+         x.className = "show";
+         // After 3 seconds, remove the show class from DIV
+         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+       }
+     });
+    document.getElementById("acrossfab").addEventListener("click", function(){
+    		var answer = answerCorrect();
+       var completionState = answer[0];
+       if(completionState){
+         // Get the snackbar DIV
+         var x = document.getElementById("snackbar");
+         // Add the "show" class to DIV
+         x.className = "show";
+         // After 3 seconds, remove the show class from DIV
+         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+       }
+       else{
+         // Get the snackbar DIV
+         var x = document.getElementById("snackbar2");
+         x.innerHTML = `You have some incorrect answers...(${answer[1]} spaces are correct)`;
+         // Add the "show" class to DIV
+         x.className = "show";
+         // After 3 seconds, remove the show class from DIV
+         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+       }
+     });
+     $(".inputs").keyup(function (e) {
+     		console.log('keyup');
+    			var chr = e.keyCode;
+         if (e.which !== 8){
+         	//console.log(this.parentNode);
+         	$(this.parentNode).next().children()[0].focus();
+         }
+         else{
+         	$(this.parentNode).prev().children().focus();
+         }
+   });
+   });
+   function answerCorrect(){
+   	var returnValue = true;
+     var totalScore = 0;
+   	for (var i = 0; i < 15; i++){
+       for (var j = 0; j < 15; j++){
+       	if(testMatrix[i+j*15] === '.' || testMatrix[i+j*15] === document.getElementById(`${j}-${i}`).value.toUpperCase()){
+         	totalScore += testMatrix[i+j*15] === '.' ? 0 : 1;
+         }
+         else{
+         	returnValue = false;
+         }
+       }
+     }
+     return [returnValue, totalScore];
+   }
+   function debugAnswerCorrect(){
+   	//console.log('mat 1:', testMatrix);
+   	for (var i = 0; i < 15; i++){
+       for (var j = 0; j < 15; j++){
+       	//console.log(i+j*15);
+         //console.log(testMatrix[i+j*15]);
+         //console.log(`${j}-${i}`);
+       	document.getElementById(`${j}-${i}`).value = testMatrix[i+j*15];
+       }
+     }
+     //console.log('mat 2:', testMatrix);
+     return true;
+   }
 </script>
 <style>
-   #snackbar {
+  #snackbar {
     visibility: hidden; /* Hidden by default. Visible on click */
     min-width: 250px; /* Set a default minimum width */
     margin-left: -125px; /* Divide value of min-width by 2 */
@@ -275,6 +275,26 @@
       left: calc(var(--size) / 12);
       top: 0;
       z-index: 100000000;
+  }
+  .recessed {
+    background-color: #546e7a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    max-width: 150px;
+    -webkit-box-shadow: inset 1px 1px 10px #333;
+    -moz-box-shadow: inset 1px 1px 10px #333;
+    box-shadow: inset 1px 1px 10px #333;
+    outline: 2px solid #37474f;
+    border-radius: 2rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .card {
+    max-width: 355px;
   }
   .fixed-action-btn {
     position: fixed;
