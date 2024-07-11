@@ -1,0 +1,63 @@
+<html>
+  <link href="https://fonts.cdnfonts.com/css/sever" rel="stylesheet">
+                
+  <body>
+    <div class="texty">
+    The Eye that watches all, 
+    the eternal death at the center of the void...
+    </div>
+    <div contenteditable="true" class="answer" id="a1">
+    
+    </div>
+    <div class="texty">
+    Born from beyond, tempered by his rage, the holy domain of the forsaken...
+    </div>
+    <div contenteditable="true" class="answer" id="a2" onchange="validate2">
+    
+    </div>
+  </body>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Sever', sans-serif;
+    }
+    .texty {
+      width: 100% !important;
+      text-align: center;
+      font-size: 2em;
+    }
+    .answer {
+      background-color: #FAEBD7;
+      min-height: 30px;
+      max-width: 33%;
+      margin-left: 33%;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      color: black;
+      font-size: 2em;
+    }
+    .valid {
+      background-color: rgb(115 40 237);
+    }
+  </style>
+  <script>
+    function validate1(e){
+    	if (e.target.innerHTML === 'Tharizdun' || e.target.innerHTML === 'tharizdun'){
+      	e.target.classList.add('valid');
+      }
+      console.log('Validation ran.');
+    }
+    
+    document.getElementById('a1').addEventListener("keyup", (event) => {validate1(event)});
+    
+    function validate2(e){
+    	if (e.target.innerHTML === 'The Abyss' || e.target.innerHTML === 'the abyss'){
+      	e.target.classList.add('valid');
+      }
+      console.log('Validation ran.');
+    }
+    
+    document.getElementById('a2').addEventListener("keyup", (event) => {validate2(event)});
+  </script>
+</html>
